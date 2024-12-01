@@ -21,7 +21,7 @@ jobs:
         registry: docker.io
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
-        tag: latestt  # or your custom tag like "v1.0.0"
+        tag: latest  # or your custom tag like "v1.0.0"
 
   
   deploy-to-k8s:
@@ -39,8 +39,8 @@ jobs:
 
       - name: Deploy to Kubernetes
         run: |
-          kubectl apply -f k8s/deployment.yaml
-          kubectl apply -f k8s/service.yaml
+          kubectl apply -f deployment.yaml
+          kubectl apply -f service.yaml
 
       - name: Wait for Deployment to complete
         run: |
