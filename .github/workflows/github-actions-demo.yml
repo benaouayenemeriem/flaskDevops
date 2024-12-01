@@ -35,8 +35,6 @@ jobs:
 
       - name: Set up Azure CLI
         uses: azure/azure-cli-action@v1
-        with:
-          azure-cliversion: '2.42.0'
 
       - name: Log in to Azure
         run: |
