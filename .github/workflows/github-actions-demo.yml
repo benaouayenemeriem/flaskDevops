@@ -33,16 +33,15 @@ jobs:
       - name: Check out the repository
         uses: actions/checkout@v2
 
-      - name: Set up Azure CLI
-        uses: azure/azure-cli-action@v1
+      - name: Azure Login
+        uses: azure/login@v2
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-      - name: Log in to Azure
-        run: |
-          az login --service-principal --username ${{ secrets.AZURE_CLIENT_ID }} --password ${{ secrets.AZURE_CLIENT_SECRET }} --tenant ${{ secrets.AZURE_TENANT_ID }}
-          
       - name: Get AKS Credentials
         run: |
-          az aks get-credentials --resource-group your-resource-group --name your-aks-cluster
+          az aks get-credentials --resource-group k8_group --name k8
+
 
       - name: Deploy to Azure Kubernetes Service
         run: |
