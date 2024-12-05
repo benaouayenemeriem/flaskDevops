@@ -7,7 +7,6 @@ from app.services.user_service import create_user, get_all_users, get_user_by_id
 user_namespace = Namespace('users', description='User operations')
 
 
-# Initialize SQLAlchemy
 db = SQLAlchemy(app)
 
 # Swagger model for User
