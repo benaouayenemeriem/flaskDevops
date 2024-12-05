@@ -5,22 +5,30 @@ services:
       context: .
     ports:
       - "5000:5000"
-  mongo:
-    image: mongo
+
+  mysql:
+    image: mysql:latest
     restart: always
     environment:
-      MONGO_INITDB_ROOT_USERNAME: root
-      MONGO_INITDB_ROOT_PASSWORD: example
+      MYSQL_ROOT_PASSWORD: example
+      MYSQL_DATABASE: mydatabase
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql  # This will persist MySQL data
 
-  mongo-express:
-    image: mongo-express
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
     restart: always
     ports:
-      - "8081:8081"
+      - "8081:80"
     environment:
-      ME_CONFIG_MONGODB_ADMINUSERNAME: root
-      ME_CONFIG_MONGODB_ADMINPASSWORD: example
-      ME_CONFIG_MONGODB_URL: mongodb://root:example@mongo:27017/
-      ME_CONFIG_BASICAUTH: "true"
-      ME_CONFIG_BASIC_AUTH_USERNAME: "admin"  # Set a username for basic auth
-      ME_CONFIG_BASIC_AUTH_PASSWORD: "password"  # Set a password for basic auth
+      PMA_HOST: mysql
+      PMA_USER: root
+      PMA_PASSWORD: example
+      PMA_ABSOLUTE_URI: http://localhost:8081/
+
+volumes:
+  mysql_data:  # Declaring the volume
