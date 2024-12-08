@@ -1,4 +1,4 @@
-from . import db
+from ..config import db    
 
 class Role(db.Model):
     __tablename__ = 'roles'

@@ -1,4 +1,4 @@
-name: CI/CD Docker Compose Build and Push
+name: Tag and Push Docker Images
 
 on:
   push:
@@ -13,17 +13,27 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v3
 
+    - name: Log in to Docker Hub
+      run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
 
-    - name: Build and Push Docker Image
-      uses: mr-smithers-excellent/docker-build-push@v4
-      with:
-        image: meriemlearn/repo
-        registry: docker.io
-        username: ${{ secrets.DOCKER_USERNAME }}
-        password: ${{ secrets.DOCKER_PASSWORD }}
-        tag: latest  # or your custom tag like "v1.0.0"
+    - name: Build Docker Compose Services
+      run: docker-compose build
 
-  
+    - name: Tag and Push Docker Images
+      run: |
+        # Tag and push the server image
+        docker tag meriemlearn/repo:server ${DOCKER_USERNAME}/repo:server
+        docker push ${DOCKER_USERNAME}/repo:server
+
+        # Tag and push the mysql image (official to your repo)
+        docker pull mysql:latest
+        docker tag mysql:latest ${DOCKER_USERNAME}/repo:mysql
+        docker push ${DOCKER_USERNAME}/repo:mysql
+
+        # Tag and push the phpmyadmin image (official to your repo)
+        docker pull phpmyadmin/phpmyadmin
+        docker tag phpmyadmin/phpmyadmin ${DOCKER_USERNAME}/repo:phpmyadmin
+        docker push ${DOCKER_USERNAME}/repo:phpmyadmin
 
   deploy-to-k8s:
     runs-on: ubuntu-22.04

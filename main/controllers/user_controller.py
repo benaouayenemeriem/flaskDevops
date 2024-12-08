@@ -1,13 +1,12 @@
 from flask import request
 from flask_restx import Namespace, Resource, fields
 from flask_sqlalchemy import SQLAlchemy
-from app.services.user_service import create_user, get_all_users, get_user_by_id, update_user, delete_user
+from ..config import db    
+from main.services.user_service import create_user, get_all_users, get_user_by_id, update_user, delete_user
 
    
 user_namespace = Namespace('users', description='User operations')
 
-
-db = SQLAlchemy(app)
 
 # Swagger model for User
 user_model = user_namespace.model('User', {

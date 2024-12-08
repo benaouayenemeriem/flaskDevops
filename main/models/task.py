@@ -1,5 +1,5 @@
 from datetime import datetime
-from . import db
+from ..config import db    
 
 class Task(db.Model):
     __tablename__ = 'tasks'
