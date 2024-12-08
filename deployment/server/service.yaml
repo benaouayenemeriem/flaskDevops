@@ -13,4 +13,3 @@ spec:
       nodePort: 30000   # Port to access from outside
   type: LoadBalancer  # Use NodePort or ClusterIP as needed
 
-      
