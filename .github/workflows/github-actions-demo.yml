@@ -21,19 +21,18 @@ jobs:
 
     - name: Tag and Push Docker Images
       run: |
-        # Tag and push the server image
-        docker tag meriemlearn/repo:server ${DOCKER_USERNAME}/repo:server
-        docker push ${DOCKER_USERNAME}/repo:server
+        # push the server image
+        docker push meriemlearn/repo:server
 
         # Tag and push the mysql image (official to your repo)
         docker pull mysql:latest
-        docker tag mysql:latest ${DOCKER_USERNAME}/repo:mysql
-        docker push ${DOCKER_USERNAME}/repo:mysql
+        docker tag mysql:latest meriemlearn/repo:mysql
+        docker push meriemlearn/repo:mysql
 
         # Tag and push the phpmyadmin image (official to your repo)
         docker pull phpmyadmin/phpmyadmin
-        docker tag phpmyadmin/phpmyadmin ${DOCKER_USERNAME}/repo:phpmyadmin
-        docker push ${DOCKER_USERNAME}/repo:phpmyadmin
+        docker tag phpmyadmin/phpmyadmin meriemlearn/repo:phpmyadmin
+        docker push meriemlearn/repo:phpmyadmin
 
   deploy-to-k8s:
     runs-on: ubuntu-22.04
