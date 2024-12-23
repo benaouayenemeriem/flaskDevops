@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: mysql
+  labels:
+    app: mysql
+    type: standalone
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mysql
+      type: standalone
+  serviceName: mysql
+  template:
+    metadata:
+      labels:
+        app: mysql
+        type: standalone
+    spec:
+      # nodeSelector:
+      #   app: database
+      containers:
+      - name: mysql
+        image: mysql:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - name: server
+          containerPort: 3306
+        env:
+          - name: MYSQL_ROOT_PASSWORD
+            value: example  # Set your root password here
+          - name: MYSQL_DATABASE
+            value: mydatabase  # Define the database name
+          - name: MYSQL_USER
+            value: user  # Define a user
+          - name: MYSQL_PASSWORD
+            value: password  # Define the user's password
+        volumeMounts:
+        - name: data
+          mountPath: /var/lib/mysql
+      #  - name: mysql-conf
+      #    mountPath: /etc/mysql/my.cnf
+      #    subPath: my.cnf
+      #  - name: log
+      #    mountPath: /var/log/mysqld.log
+        resources:
+          limits:
+            memory: "4Gi"
+            cpu: "2"
+          requests:
+            memory: "512Mi"
+            cpu: "1"

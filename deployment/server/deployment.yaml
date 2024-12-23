@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: my-app-container
-          image: meriemlearn/repo:latest  # Image from registry
+          image: meriemlearn/repo:server  # Image from registry
           ports:
             - containerPort: 5000  # Port the container is listening on
       imagePullSecrets:
