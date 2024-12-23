@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-app-{{ .Values.blueGreen.active }}
+  labels:
+    app: my-app
+    environment: {{ .Values.blueGreen.active }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: my-app
+      environment: {{ .Values.blueGreen.active }}
+  template:
+    metadata:
+      labels:
+        app: my-app
+        environment: {{ .Values.blueGreen.active }}
+    spec:
+      containers:
+        - name: my-app-container
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          ports:
+            - containerPort: {{ .Values.service.port }}
+      imagePullSecrets:
+        {{- if .Values.imagePullSecrets }}
+        {{ toYaml .Values.imagePullSecrets | indent 8 }}
+        {{- end }}
