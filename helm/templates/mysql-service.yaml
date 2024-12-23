@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql-{{ .Values.blueGreen.active }}
+  labels:
+    app: mysql
+    environment: {{ .Values.blueGreen.active }}
+spec:
+  selector:
+    app: mysql
+    environment: {{ .Values.blueGreen.active }}
+  ports:
+    - port: 3306
+      targetPort: 3306
+  type: LoadBalancer

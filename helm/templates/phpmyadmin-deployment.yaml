@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: phpmyadmin-{{ .Values.blueGreen.active }}
+  labels:
+    app: phpmyadmin
+    environment: {{ .Values.blueGreen.active }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: phpmyadmin
+      environment: {{ .Values.blueGreen.active }}
+  template:
+    metadata:
+      labels:
+        app: phpmyadmin
+        environment: {{ .Values.blueGreen.active }}
+    spec:
+      containers:
+        - name: phpmyadmin-container
+          image: "{{ .Values.phpmyadmin.image.repository }}:{{ .Values.phpmyadmin.image.tag }}"
+          ports:
+            - containerPort: 8081
+      imagePullSecrets:
+        {{- if .Values.imagePullSecrets }}
+        {{ toYaml .Values.imagePullSecrets | indent 8 }}
+        {{- end }}

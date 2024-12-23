@@ -1,37 +1,60 @@
 replicaCount: 2
 
+# Image configuration for the application
 image:
   repository: meriemlearn/repo
   tag: server
   pullPolicy: IfNotPresent
 
+# MySQL Configuration
+mysql:
+  image:
+    repository: meriemlearn/repo
+    tag: mysql
+  rootPassword: "example"        # Set a secure root password
+  database: "mydatabase"        # Database name
+  user: "user"                  # Database username
+  password: "password"          # Database password
+
+# phpMyAdmin Configuration
+phpmyadmin:
+  image:
+    repository: meriemlearn/repo
+    tag: phpmyadmin
+
+# Service Configuration
 service:
-  type: LoadBalancer
+  type: LoadBalancer             # Change to ClusterIP or NodePort if LoadBalancer is not supported
   port: 5000
 
+# Blue-Green Deployment Configuration
 blueGreen:
-  active: blue  # Current active environment: 'blue' or 'green'
+  active: blue                   # Current active environment: 'blue' or 'green'
   blueSuffix: "-blue"
   greenSuffix: "-green"
 
+# Image Pull Secrets for private Docker registry
 imagePullSecrets:
-  - name: docker-registry-secret
+  - name: docker-registry-secret # Ensure this secret is created in the namespace
 
+# Service Account Configuration
 serviceAccount:
-  create: false
-  name: ""
+  create: false                  # Set to true to create a new service account
+  name: ""                       # Leave empty to use default service account
 
+# Ingress Configuration
 ingress:
-  enabled: false
+  enabled: false                 # Set to true if ingress is required
   annotations: {}
   hosts:
-    - host: ""
+    - host: ""                   # Replace with your domain or leave empty
       paths:
         - path: /
           pathType: Prefix
 
+# Autoscaling Configuration
 autoscaling:
-  enabled: false
-  minReplicas: 1
-  maxReplicas: 5
-  targetCPUUtilizationPercentage: 80
+  enabled: false                 # Set to true to enable HPA
+  minReplicas: 1                 # Minimum number of replicas
+  maxReplicas: 5                 # Maximum number of replicas
+  targetCPUUtilizationPercentage: 80 # CPU utilization threshold for scaling
